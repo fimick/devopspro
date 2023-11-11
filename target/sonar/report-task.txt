@@ -1,0 +1,6 @@
+projectKey=project-a
+serverUrl=http://67.202.27.41:9000
+serverVersion=9.4.0.54424
+dashboardUrl=http://67.202.27.41:9000/dashboard?id=project-a
+ceTaskId=AYu0yIjGmBBrbhFZqBkw
+ceTaskUrl=http://67.202.27.41:9000/api/ce/task?id=AYu0yIjGmBBrbhFZqBkw
