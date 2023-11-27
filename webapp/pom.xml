@@ -186,7 +186,7 @@
     <repository>
         <id>central</id>
         <name>ip-172-31-13-73.ec2.internal-releases</name>
-        <url>http://54.227.22.201:8082/artifactory/project-a-libs-release-local</url>
+        <url>http://54.174.239.182:8082/artifactory/project-a-libs-release-local</url>
     </repository>
 </distributionManagement>
 
