@@ -1,7 +1,7 @@
 pipeline {
   agent any
   tools {
-  maven 'MAVEN_HOME'
+  maven 'Maven'
   }
     
 	stages {
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "jfrog",
-                    url: "http://34.215.37.65:8082/artifactory",
+                    url: "http://54.163.59.166:8082/artifactory",
                     credentialsId: "jfrog"
                 )
 
@@ -80,11 +80,11 @@ pipeline {
             
             steps {
                   sshagent(['ssh_agent']) {
-                       sh "chmod 400  mo-oregon-kp.pem"
+                       sh "chmod 400  stagingserver-kp.pem"
                        sh "ls -lah"
-                        sh "scp -i stagingserver-kp.pem -o StrictHostKeyChecking=no dockerfile ubuntu@52.87.174.228:/home/ubuntu"
-                        sh "scp -i stagingserver-kp.pem -o StrictHostKeyChecking=no dockerfile ubuntu@52.87.174.228:/home/ubuntu"
-                        sh "scp -i stagingserver-kp.pem -o StrictHostKeyChecking=no push-dockerhub.yaml ubuntu@52.87.174.228:/home/ubuntu"
+                        sh "scp -i stagingserver-kp.pem -o StrictHostKeyChecking=no dockerfile ubuntu@3.89.248.227:/home/ubuntu"
+                        sh "scp -i stagingserver-kp.pem -o StrictHostKeyChecking=no dockerfile ubuntu@3.89.248.227:/home/ubuntu"
+                        sh "scp -i stagingserver-kp.pem -o StrictHostKeyChecking=no push-dockerhub.yaml ubuntu@3.89.248.227:/home/ubuntu"
                     }
                 }
         } 
@@ -93,16 +93,16 @@ pipeline {
             
             steps {
                   sshagent(['ssh_key']) {
-                        sh "ssh -i stagingserver-kp.pem -o StrictHostKeyChecking=no ubuntu@52.87.174.228 -C \"ansible-playbook  -vvv -e build_number=${BUILD_NUMBER} push-dockerhub.yaml\""       
+                        sh "ssh -i stagingserver-kp.pem -o StrictHostKeyChecking=no ubuntu@3.89.248.227 -C \"ansible-playbook  -vvv -e build_number=${BUILD_NUMBER} push-dockerhub.yaml\""       
                     }
                 }
         } 
 
-    stage('Copy Deployment & Service Defination to K8s Master') {
+     stage('Copy Deployment & Service Defination to K8s Master') {
             
             steps {
                   sshagent(['ssh_key']) {
-                        sh "scp -i stagingserver-kp.pem -o StrictHostKeyChecking=no deployment_service.yaml ubuntu@54.198.19.129:/home/ubuntu"
+                        sh "scp -i mo-oregon-kp.pem -o StrictHostKeyChecking=no deployment_service.yaml ubuntu@54.80.155.97:/home/ubuntu"
                         }
                 }
         } 
@@ -117,15 +117,16 @@ pipeline {
             
             steps {
                   sshagent(['ssh_key']) {
-                        //sh "ssh -i stagingserver-kp.pem -o StrictHostKeyChecking=no ubuntu@54.198.19.129 -C \"kubectl set image deployment/ranty customcontainer=fimick30/july-set:${BUILD_NUMBER}\""
-                        //sh "ssh -i stagingserver-kp.pem -o StrictHostKeyChecking=no ubuntu@54.198.19.129 -C \"kubectl delete deployment ranty && kubectl delete service ranty\""
-                        sh "ssh -i stagingserver-kp.pem -o StrictHostKeyChecking=no ubuntu@54.198.19.129 -C \"kubectl apply -f deploy_service.yaml\""
-                        //sh "ssh -i stagingserver-kp.pem -o StrictHostKeyChecking=no ubuntu@54.198.19.129 -C \"kubectl apply -f deployment_service.yaml\""
+                        //sh "ssh -i mo-oregon-kp.pem -o StrictHostKeyChecking=no ubuntu@54.80.155.97 -C \"kubectl set image deployment/ranty customcontainer=fimick30/july-set:${BUILD_NUMBER}\""
+                        //sh "ssh -i mo-oregon-kp.pem -o StrictHostKeyChecking=no ubuntu@54.80.155.97 -C \"kubectl delete deployment ranty && kubectl delete service ranty\""
+                        sh "ssh -i mo-oregon-kp.pem -o StrictHostKeyChecking=no ubuntu@54.80.155.97 -C \"kubectl apply -f deployment_service.yaml\""
+                        //sh "ssh -i mo-oregon-kp.pem -o StrictHostKeyChecking=no ubuntu@54.80.155.97 -C \"kubectl apply -f service.yaml\""
                     }
                 }  
         } 
    } 
 }
+
 
 
 
