@@ -56,25 +56,25 @@ pipeline {
             }
     }
 
-    stage ('Deploy Artifacts') {
-            steps {
-                rtMavenRun (
-                    tool: "Maven", // Tool name from Jenkins configuration
-                    pom: 'webapp/pom.xml',
-                    goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER",
-                    resolverId: "MAVEN_RESOLVER"
-                )
-         }
-    }
+  //  stage ('Deploy Artifacts') {
+          //  steps {
+              //  rtMavenRun (
+                  //  tool: "Maven", // Tool name from Jenkins configuration
+                  //  pom: 'webapp/pom.xml',
+                  //  goals: 'clean install',
+                  //  deployerId: "MAVEN_DEPLOYER",
+                  //  resolverId: "MAVEN_RESOLVER"
+              //  )
+       //  }
+  //  }
 
-    stage ('Publish build info') {
-            steps {
-                rtPublishBuildInfo (
-                    serverId: "jfrog"
-             )
-        }
-    }
+  //  stage ('Publish build info') {
+          //  steps {
+              //  rtPublishBuildInfo (
+                  //  serverId: "jfrog"
+           //  )
+      //  }
+  //  }
 
     stage('Copy Dockerfile & Playbook to Staging Server') {
             
